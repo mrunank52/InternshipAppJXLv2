@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             tv.setText(tobedisplayed);
 
             wb.close();
-            is.close();
+            is.close();     //FIle closed
         }
         catch (Exception e){
 
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             tv.setText(tobedisplayed);
 
             wb.close();
-            is.close();
+            is.close();         //File Closed
 
         } catch (Exception e) {
 
