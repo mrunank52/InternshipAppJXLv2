@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-    }//end of Oncreate
+    }//end of Oncreate function
 
     public void MakeCall(android.view.View view){
         String callString ="tel:";
