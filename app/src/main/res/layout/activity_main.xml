@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:onClick="btnClickLeft"
-        android:text="Back"
+        android:text="Previous"
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,8 +24,8 @@
 
     <TextView
         android:id="@+id/TEXTDISP"
-        android:layout_width="255dp"
-        android:layout_height="88dp"
+        android:layout_width="245dp"
+        android:layout_height="76dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="24dp"
@@ -48,7 +48,7 @@
         android:layout_marginEnd="64dp"
         android:layout_marginRight="64dp"
         android:onClick="btnClickRight"
-        android:text="Right"
+        android:text="Next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TEXTDISP" />
 

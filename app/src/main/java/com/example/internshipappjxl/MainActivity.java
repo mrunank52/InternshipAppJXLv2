@@ -11,11 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.Manifest;
 import android.widget.Toast;
 import android.support.v4.content.ContextCompat;
-
 import android.support.annotation.NonNull;
-
-
-
 import java.io.InputStream;
 import jxl.Cell;
 import jxl.Sheet;
@@ -29,30 +25,32 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Method that runs once the app is created
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv = (TextView)findViewById(R.id.TEXTDISP);
-        Toast.makeText(this,"OnCreate",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,"OnCreate",Toast.LENGTH_SHORT).show();
 
 
         try{
 
-            //Displaying the contents of the first entry
+            //Opening The excel file stored in the assets folder
             AssetManager am = getAssets();
             InputStream is  = am.open("Sample.xls");
             Workbook wb = Workbook.getWorkbook(is);
             Sheet s = wb.getSheet(0);
 
+            //Logging to check file has been accessed
+            Toast.makeText(this,"Made access to Excel File",Toast.LENGTH_SHORT).show();
 
-            Toast.makeText(this,"Making access",Toast.LENGTH_SHORT).show();
-            CurrentRowNo = 0;
-            Cell nameCell = s.getCell(0,0);
-            Cell phonenoCell =s.getCell(1,0);
+            //Displaying the contents of the first entry
+            CurrentRowNo = 0; //Initial value of CurrentRowNo
+            Cell nameCell = s.getCell(0,CurrentRowNo);
+            Cell phonenoCell =s.getCell(1,CurrentRowNo);
 
             String tobedisplayed = "Name:"+nameCell.getContents() +"\nPhoneno:"+phonenoCell.getContents();
 
-            tv.setText(tobedisplayed);
-
+            tv.setText(tobedisplayed); //Display the details in the Textview
 
             wb.close();
             is.close();
@@ -94,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        //This is the call to actual function making the phone call
         MakeActualPhoneCall(callString);
         callString = "";
 
@@ -104,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     void MakeActualPhoneCall(String callString) {
+        //The method makes the actual Phone call that is required
 
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //Overided method included in the android library for requesting permission for call access
         if (requestCode == REQUEST_CALL) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 MakeActualPhoneCall(callString);
@@ -130,8 +131,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void btnClickLeft(android.view.View view){
+        //Traverse the excel file list in a circular manner to left
         try {
-            Toast.makeText(this,"Inside btnClik",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Inside btnClik",Toast.LENGTH_SHORT).show();
             AssetManager am = getAssets();
             InputStream is  = am.open("Sample.xls");
             Workbook wb = Workbook.getWorkbook(is);
@@ -156,20 +158,8 @@ public class MainActivity extends AppCompatActivity {
         }//catch
 
 
-//
-//        Intent callIntent = new Intent(Intent.ACTION_CALL);
-//        callIntent.setData(Uri.parse("tel:9930414241"));
-//
-//        if (ActivityCompat.checkSelfPermission(MainActivity.this,
-//                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//            startActivity(callIntent);
-//        }
-//        else{
-//            Toast.makeText(this,"Access denial", Toast.LENGTH_LONG);
-//        }
 
-
-    }//method btnClick
+    }//method btnClickLeft
 
 
 
@@ -177,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void btnClickRight(android.view.View view) {
         try {
+            //Traverse the excel file list in a circular manner to left
             AssetManager am = getAssets();
             InputStream is = am.open("Sample.xls");
             Workbook wb = Workbook.getWorkbook(is);
@@ -200,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         }//catch
 
-    }//btnClickRight
+    }//end of btnClickRight
 
 
-}
+}//End of Class
