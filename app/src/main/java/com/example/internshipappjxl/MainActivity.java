@@ -10,6 +10,10 @@ import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.Manifest;
 import android.widget.Toast;
+import android.support.v4.content.ContextCompat;
+
+import android.support.annotation.NonNull;
+
 
 
 import java.io.InputStream;
@@ -20,7 +24,8 @@ import jxl.Workbook;
 public class MainActivity extends AppCompatActivity {
     TextView tv;
     int CurrentRowNo; //To keep a track of the current being accessed
-
+    int REQUEST_CALL =1;
+    String callString="1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }//end of Oncreate function
 
     public void MakeCall(android.view.View view){
-        String callString ="tel:";
+        callString ="tel:";
 
         try{
 
@@ -89,13 +94,40 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        MakeActualPhoneCall(callString);
+        callString = "";
 
 
-//        Intent callIntent = new Intent(Intent.ACTION_CALL);
-//        callIntent.setData(Uri.parse(callString));
-//        startActivity(callIntent);
+    }//End of makecall
 
+
+
+
+    void MakeActualPhoneCall(String callString) {
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+        } else {
+
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(callString)));
+        }
     }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                MakeActualPhoneCall(callString);
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     public void btnClickLeft(android.view.View view){
         try {
