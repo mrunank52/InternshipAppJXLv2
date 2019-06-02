@@ -62,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
 
     }//end of Oncreate function
 
+    public void Close(android.view.View view){
+        finish();
+    }//CloseButton
+
     public void MakeCall(android.view.View view){
         callString ="tel:";
 
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(callString)));
         }
-    }
+    }//end of the func MakeActualPhoneCall()
 
 
 
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
             }
         }
-    }
+    }//end of OnRequestPermissionsResult
 
 
     public void btnClickLeft(android.view.View view){
