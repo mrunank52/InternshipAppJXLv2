@@ -1,8 +1,10 @@
 package com.example.internshipappjxl;
 
 import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,12 +18,19 @@ import java.io.InputStream;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
+import android.content.Context;
+import android.media.AudioManager;
+
+
 
 public class MainActivity extends AppCompatActivity {
     TextView tv;
     int CurrentRowNo; //To keep a track of the current being accessed
     int REQUEST_CALL =1;
     String callString="1";
+
+    MediaPlayer player;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             Sheet s = wb.getSheet(0);
 
 
+
             Cell nameCell = s.getCell(0,CurrentRowNo);
             Cell phonenoCell =s.getCell(1,CurrentRowNo);
 
@@ -115,8 +125,21 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
         } else {
 
+
+
             startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(callString)));
-        }
+
+            boolean isSoundPlayed=false;
+
+            while(!isSoundPlayed) {
+                if(isCallActive(this)) {
+                    isSoundPlayed=true;
+                    play();
+                }
+            }//end of while
+
+        }//end of else
+
     }//end of the func MakeActualPhoneCall()
 
 
@@ -196,6 +219,54 @@ public class MainActivity extends AppCompatActivity {
         }//catch
 
     }//end of btnClickRight
+
+
+
+    //For mediaplayer - Sound file funcs
+
+    public void play() {
+        if (player == null) {
+            player = MediaPlayer.create(this, R.raw.song);
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopPlayer();
+                }
+            });
+        }
+
+        player.start();
+    }
+
+    public void pause() {
+        if (player != null) {
+            player.pause();
+        }
+    }
+
+    public void stop() {
+        stopPlayer();
+    }
+
+    private void stopPlayer() {
+        if (player != null) {
+            player.release();
+            player = null;
+            Toast.makeText(this, "MediaPlayer released", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public static boolean isCallActive(Context context){
+        AudioManager manager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+        if(manager.getMode()==AudioManager.MODE_IN_CALL){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 
 
 }//End of Class
